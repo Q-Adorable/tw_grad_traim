@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+    
+    function Table(){
+        const tbody = () => {
+            let arr = [];
+            for(let i = 1;i <= 9; i++){
+                let tds = [];
+                for(let j=1;j<=i;j++){
+                    tds.push(<td key={j} onClick={()=>{alert(`${i}*${j}=${i*j}`)}} > {i} * {j} = {i*j} </td>);
+                }
+                arr.push(<tr key={i}>{tds}</tr>);
+            }
+            return arr;
+        }
+        return (
+           <table border="1">
+             <tbody>
+                {tbody()}
+             </tbody>
+           </table>
+        );
+    }
+    function App(){
+        return (
+            <Table />
+        );
+    }
+    ReactDOM.render(
+       <App />,
+       document.getElementById('root')
+    );
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+insert into `tw_user`(username,password,role) values("zhangsan","$2a$04$qPxO9f2dNdpvT3HuaCiBOu6gCrVCR3ykY6QVe4PSiq2EBUzrmjR6C","ADMIN"),
+("lisi","$2a$04$Fv82TMiiM2MK/fPouoWZeuxkIhxy8hUddYYRdVRrexBmFnYZEIl22","ADMIN");

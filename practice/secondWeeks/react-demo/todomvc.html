@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta cha``rset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Template • TodoMVC</title>
+    <link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+    <link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class Todo extends React.Component{
+            constructor(props){
+                super(props);            
+            }
+            render(){
+                let todo=this.props.todo;
+                let complete=this.props.todo.complete;
+                let liClassName='';
+                let checked='';
+                if(complete){
+                    liClassName='completed';
+                    checked='checked';
+                }
+                return (
+                    <li className={liClassName}>
+					    <div className="view">
+					    	<input className="toggle" type="checkbox" onClick={()=>{this.props.completeOneTodo(this.props.index)}} checked={checked} />
+					        <label onDoubleClick={()=>{this.props.setTodoText()}}>{todo.text}</label>
+					    	<button className="destroy" onClick={()=>{this.props.deleteTodo(this.props.index)}}></button>
+					    </div>
+				    	<input className="edit" value="Create a TodoMVC template" />
+                    </li>
+                );
+            }
+        }
+
+        class TodoList extends React.Component{
+            constructor(props){
+                super(props);            
+                
+            }
+            changeChecked = (e) =>{
+                this.setState({checked:e.target.checked});
+            }
+            completeAll = (e) =>{
+                this.props.completeAll(e.target.checked);
+            }
+            render(){   
+                return (
+                <section className="main">
+                    <input id="toggle-all" onClick={this.completeAll} onChange={this.changeChecked} className="toggle-all" type="checkbox" />
+                    <label htmlFor="toggle-all">Mark all as complete</label>
+                    <ul className="todo-list">
+                        {this.props.todos.map((todo,index) => <Todo index={index} completeOneTodo={this.props.completeOneTodo} todo={todo} deleteTodo={this.props.deleteTodo} setTodoText={this.props.setTodoText}/> )}
+                    </ul>
+                </section>
+                );
+            }
+        }
+
+        class TodoHeader extends React.Component{
+            constructor(props){
+                super(props);
+                this.state={
+                    val:''
+                }
+            }
+            onEnterDown = (e) => {
+                if(e.which == 13){
+                    this.props.addTodo(e.target.value);
+                    this.setState({val:''});
+                }
+            }
+            changeVal = (e) => {
+                this.setState({val:e.target.value});
+            }
+            render(){
+                return (
+                    <header className="header">
+                        <h1>todos</h1>
+                        <input className="new-todo" onKeyDown={this.onEnterDown} value={this.state.val} onChange={this.changeVal}   placeholder="What needs to be done?" autoFocus />
+                    </header>
+                );
+            }
+        }
+
+        class TodoFooter extends React.Component{
+            constructor(props){
+                super(props);
+            }
+            render(){
+                return (
+                    <footer className="footer">
+                        <span className="todo-count">
+                            <strong>{this.props.activeNumber}</strong> item left
+                        </span>
+                        <ul className="filters">
+                            <li>
+                                <a onClick={()=>{this.props.getAll()}} className="selected all" href="#/">All</a>
+                            </li>
+                            <li>
+                                <a onClick={()=>{this.props.getActive()}} className="active" href="#/active">Active</a>
+                            </li>
+                            <li>
+                                <a onClick={()=>{this.props.getCompleted()}} className="completed" href="#/completed">Completed</a>
+                            </li>
+                        </ul>
+                        <button onClick={()=>{this.props.deleteCompleted()}} className="clear-completed">Clear completed</button>
+                    </footer>
+                );
+            }
+        }
+
+        class TodoApp extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {
+                    todos: [],
+                    activeNumber:1
+                };
+                this.state.todos.push({text:"Taste JavaScript",complete:true});
+                this.state.todos.push({text:"Buy a unicorn",complete:false});
+            }
+
+            //添加一条任务/查看任务列表
+            addTodo = (text)=>{
+                this.state.todos.push({text:text,complete:false});
+                this.setState({todos:this.state.todos,activeNumber:this.state.activeNumber+1});             
+            }
+
+            //标记/取消标记一条任务
+            completeOneTodo=(index)=>{
+                this.state.todos[index].complete = !this.state.todos[index].complete;
+                if(this.state.todos[index].complete){
+                    this.setState({todos:this.state.todos,activeNumber:this.state.activeNumber-1});             
+
+                }else{
+                    this.setState({todos:this.state.todos,activeNumber:this.state.activeNumber+1});             
+                }
+            }
+
+        	//标记/取消标记所有任务为完成/未完成
+            completeAll=(check)=>{
+                this.state.todos.map(todo=>{
+                    todo.complete=check;
+                });
+                if(check){
+                    this.setState({todos:this.state.todos,activeNumber:0});             
+                }else{
+                    this.setState({todos:this.state.todos,activeNumber:this.state.todos.length});             
+                }
+            }
+
+        	//删除一条任务
+            deleteTodo=(index)=>{
+                if(this.state.todos[index].complete){
+                    this.state.todos.splice(index,1);
+                    this.setState({todos:this.state.todos,activeNumber:this.state.activeNumber});             
+                }else{
+                    this.state.todos.splice(index,1);
+                    this.setState({todos:this.state.todos,activeNumber:this.state.activeNumber-1});             
+                }      
+            }
+
+        	//查看全部任务
+            getAll=()=>{
+                this.setState({todos:this.state.todos,activeNumber:this.state.activeNumber});             
+            }
+        	//查看有效任务
+            getActive=()=>{
+                this.state.todos.map((todo,index)=>{
+                    if(todo.complete){
+                        this.state.todos.splice(index,1);  
+                    }
+                });
+                this.setState(this.state.todos);  
+            }
+
+            //查看已完成任务
+            getCompleted=()=>{
+                this.state.todos.map((todo,index)=>{
+                    if(!todo.complete){
+                        this.state.todos.splice(index,1);  
+                    }
+                });
+                this.setState(this.state.todos); 
+            }
+
+        	//删除全部已完成任务
+            deleteCompleted=()=>{
+                let length=this.state.todos.length;
+                for(let i=0;i<length;i++){
+                    if(this.state.todos[i].complete){
+                        this.state.todos.splice(i,1);
+                        i--;
+                        length--;  
+                    }
+                }
+                this.setState({todos:this.state.todos,activeNumber:this.state.activeNumber});             
+            }
+            //双击修改一条任务
+            setTodoText=(text,index)=>{
+                this.state.todos[index].text=text;
+                this.setState({todos:this.state.todos,activeNumber:this.state.activeNumber});
+            }
+
+            render(){
+                return (
+                    <section className="todoapp">
+                        <TodoHeader addTodo={this.addTodo} />
+                        <TodoList todos={this.state.todos} completeOneTodo={this.completeOneTodo} completeAll={this.completeAll} deleteTodo={this.deleteTodo} setTodoText={this.setTodoText}/>
+                        <TodoFooter activeNumber={this.state.activeNumber} getAll={this.getAll} getActive={this.getActive} getCompleted={this.getCompleted} deleteCompleted={this.deleteCompleted}/>
+                    </section>
+                );
+            }
+        }
+
+        ReactDOM.render(<TodoApp />, document.getElementById('root'));
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="node_modules/todomvc-common/base.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

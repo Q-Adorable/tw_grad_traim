@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>9*9乘法表</title>
+</head>
+<body>
+    <script language="JavaScript">
+		var row = 9;
+		var colum = 9;
+		document.write("<table border=\"1\">");
+		for(i = 1; i <= row; i++){				
+			document.write("<tr>");
+			for (j = 1; j <= colum; j++){		    
+				if (j <= i){
+					document.write("<td>"+ i + "*" + j  + "=" + i*j + "</td>");
+				}else{
+					document.write("<td> </td>");
+				}
+			}
+			document.write("</tr>");
+		}
+		document.write("</table>");
+	</script>
+</body>
+</html>

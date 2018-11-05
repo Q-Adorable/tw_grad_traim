@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+    class Hello extends React.Component{
+        constructor(props){
+            super(props);
+            this.state={
+                number:1
+            }
+            setInterval(() =>this.setState({number:this.state.number+1}),1000);
+            console.log('constructor');
+        }
+        componentDidMount() {
+            console.log('did mount');
+        }
+        componentWillMount() {
+            console.log('will mount');
+        }
+        componentWillReceiveProps(nextProps){
+            console.log('receive props');
+        }
+        shouldComponentUpdate(nextProps,nextSate){
+            return true;
+        }
+
+        render(){
+            console.log('render');
+            return <h1>hello world {this.state.number}</h1>          
+        }
+    }
+    ReactDOM.render(
+        <Hello />,
+        document.getElementById('root')
+    );
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</body>
+</html>

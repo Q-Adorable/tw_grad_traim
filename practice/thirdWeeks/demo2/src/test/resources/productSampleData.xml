@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <product id="1" name="苹果" price="6" type="斤" img_url="./img" />
+    <product id="2" name="香蕉" price="4" type="斤" img_url="./img"/>
+</dataset>

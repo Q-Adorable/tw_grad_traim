@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    <style>
+        div[title]{
+            color: red;
+        }
+        div[title="demo"]{
+            margin-left: 10%;
+        }
+        div[title*="demo"]{
+            border: 1px saddlebrown solid;
+        }
+        div[title|="zh"]{
+            background-color: burlywood;
+        }
+    </style>
+</head>
+<body>
+    <div title="none">none</div>
+    <div title="demo">demo</div>
+    <div title="this div name is demo">this div name is demo</div>
+    <div title="zh">zh</div>
+    <div title="zh-zh">zh-zh</div>
+    <div>什么都没有</div>
+    <div>什么都没有</div>
+    <div>什么都没有</div>
+    <div>什么都没有</div>
+    <div>什么都没有</div>
+</body>
+</html>
